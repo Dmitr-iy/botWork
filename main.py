@@ -3,6 +3,8 @@ import asyncpg
 from aiogram import Bot, Dispatcher
 import logging
 from aiogram.filters import CommandStart
+
+from bot.handlers.callback_start import call_start
 from bot.handlers.start import get_start
 from bot.utils.commands import set_commands
 from data.config import config_settings
@@ -37,7 +39,9 @@ async def start():
     try:
         dp.update.middleware(DbConnection(pool_connect))
         dp.message.register(get_start, CommandStart())
+        dp.callback_query.register(call_start)
 
+        await bot.delete_webhook(drop_pending_updates=True)
         await dp.start_polling(bot)
 
     except Exception as e:
