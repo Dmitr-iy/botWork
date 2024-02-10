@@ -1,0 +1,12 @@
+
+env
+.idea
+/env
+__pycache__
+*.pyc
+*.egg-info
+*.egg
+.env
+venv
+__init__.py
+test.py
