@@ -2,6 +2,10 @@ from aiogram.filters.callback_data import CallbackData
 
 
 class Start(CallbackData, prefix='start'):
-    start: str
-    help: str
+    choice: str
     full_name: str
+
+
+class Select(CallbackData, prefix='select'):
+    select: str
+    name: str

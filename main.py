@@ -2,13 +2,10 @@ import asyncio
 import asyncpg
 from aiogram import Bot, Dispatcher
 import logging
-from aiogram.filters import CommandStart
-
-from bot.handlers.callback_start import call_start
-from bot.handlers.start import get_start
 from bot.utils.commands import set_commands
 from data.config import config_settings
 from middlewares.dbmiddlewares import DbConnection
+from bot.handlers.start import router_start
 
 
 async def start_bot(bot: Bot):
@@ -38,8 +35,7 @@ async def start():
 
     try:
         dp.update.middleware(DbConnection(pool_connect))
-        dp.message.register(get_start, CommandStart())
-        dp.callback_query.register(call_start)
+        dp.include_router(router_start)
 
         await bot.delete_webhook(drop_pending_updates=True)
         await dp.start_polling(bot)

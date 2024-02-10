@@ -1,4 +1,5 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from bot.utils.callbackdata import Start
 
 
 def start_kb(full_name=""):
@@ -6,11 +7,11 @@ def start_kb(full_name=""):
 
     builder.button(
         text="Начать",
-        callback_data=f"start:{full_name}".format(full_name=full_name)
+        callback_data=Start(full_name=full_name, choice="start").pack()
     )
 
     builder.button(
         text="Инструкции",
-        callback_data=f"help:{full_name}".format(full_name=full_name)
+        callback_data=Start(full_name=full_name, choice="help").pack()
     )
     return builder.as_markup()
