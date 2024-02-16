@@ -2,6 +2,8 @@ import asyncio
 import asyncpg
 from aiogram import Bot, Dispatcher
 import logging
+from bot.handlers.handler_msg_save import router_save_msg
+from bot.handlers.handler_save import router_save
 from bot.utils.commands import set_commands
 from data.config import config_settings
 from middlewares.dbmiddlewares import DbConnection
@@ -35,7 +37,7 @@ async def start():
 
     try:
         dp.update.middleware(DbConnection(pool_connect))
-        dp.include_router(router_start)
+        dp.include_routers(router_start, router_save, router_save_msg)
 
         await bot.delete_webhook(drop_pending_updates=True)
         await dp.start_polling(bot)

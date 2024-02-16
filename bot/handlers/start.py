@@ -20,33 +20,33 @@ async def get_start(message: Message, request: Request):
         await request.add_data(message.from_user.id, message.from_user.full_name)
         await message.answer(f"Привет{message.from_user.full_name}, для начала работы нажми начать."
                              f" Для ознакомления с инструкциями нажми инструкции.",
-                             reply_markup=start_kb(message.from_user.full_name))
+                             reply_markup=start_kb())
     else:
         await message.answer("У вас нет доступа к этому боту.")
 
 
 @router_start.callback_query(Start.filter())
 async def call_start(call: CallbackQuery, callback_data: Start):
-    name = callback_data.full_name
+    # name = callback_data.full_name
     start = callback_data.choice
     if start == 'start':
-        await call.message.answer(f"{name}, Выбери действие", reply_markup=select_kb(name=name))
+        await call.message.answer(f"{call.from_user.full_name}, Выбери действие", reply_markup=select_kb())
     else:
-        await call.message.answer(f"{name}, инструкция пока не доступна")
+        await call.message.answer(f"{call.from_user.full_name}, инструкция пока не доступна")
 
 
 @router_start.callback_query(Select.filter())
 async def call_select(call: CallbackQuery, callback_data: Select):
-    name = callback_data.name
+    # name = callback_data.name
     select = callback_data.select
     if select == "save":
-        await call.message.answer(f"{name}, выбери таблицу для внесения данных",
-                                  reply_markup=select_table_kb(name=name))
+        await call.message.answer(f"{call.from_user.full_name}, выбери таблицу для внесения данных",
+                                  reply_markup=select_table_kb())
     elif select == "view":
-        await call.message.answer(f"{name}, данные")
+        await call.message.answer(f"{call.from_user.full_name}, данные")
     elif select == "edit":
-        await call.message.answer(f"{name}, редактировать данные")
+        await call.message.answer(f"{call.from_user.full_name}, редактировать данные")
     elif select == "delete":
-        await call.message.answer(f"{name}, удалить данные")
+        await call.message.answer(f"{call.from_user.full_name}, удалить данные")
 
 
